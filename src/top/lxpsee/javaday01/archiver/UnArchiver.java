@@ -1,7 +1,7 @@
 package top.lxpsee.javaday01.archiver;
 
-import top.lxpsee.Archiver.Utils.FileUtils;
-import top.lxpsee.Archiver.model.FileBean;
+import top.lxpsee.javaday01.archiver.model.FileBean;
+import top.lxpsee.javaday01.archiver.utils.FileUtils;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
