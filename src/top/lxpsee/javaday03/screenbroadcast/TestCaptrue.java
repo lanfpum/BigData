@@ -6,6 +6,10 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * 努力常态化  2018/7/4 15:06 The world always makes way for the dreamer
@@ -21,6 +25,17 @@ public class TestCaptrue {
         Robot robot = new Robot();
         BufferedImage screenCapture = robot.createScreenCapture(new Rectangle(0, 0, 1366, 768));
         ImageIO.write(screenCapture, "jpg", new FileOutputStream("F:\\bigdata\\arch\\1.jpg"));
+    }
+
+    @Test
+    public void test2() {
+        Map<Integer, String> map = new HashMap<Integer, String>();
+        for (int i = 0; i < 5; i++) {
+            map.put(i, "s " + i);
+        }
+
+        Iterator<String> iterator = map.values().iterator();
+        String next = iterator.next();
     }
 
 }

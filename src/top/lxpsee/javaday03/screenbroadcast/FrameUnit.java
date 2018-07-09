@@ -4,22 +4,22 @@ import java.io.Serializable;
 
 /**
  * 切割屏幕图片的帧单元
- *
+ * <p>
  * 努力常态化  2018/7/4 15:02 The world always makes way for the dreamer
  */
 public class FrameUnit implements Serializable {
-    private Long frameId;           // 8字节 截屏id
+    private long frameId;       // 8字节 截屏id
     private int frameUnitCount; // 1字节 切屏之后帧单元的个数
     private int frameUnitNo;    // 1字节 切屏之后帧单元的编号
 
     private int dataLen;        // 4字节 数据长度
     private byte[] dataBytes;
 
-    public Long getFrameId() {
+    public long getFrameId() {
         return frameId;
     }
 
-    public void setFrameId(Long frameId) {
+    public void setFrameId(long frameId) {
         this.frameId = frameId;
     }
 

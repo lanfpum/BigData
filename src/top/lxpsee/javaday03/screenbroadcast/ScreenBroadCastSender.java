@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
-import java.net.SocketException;
 import java.util.List;
 
 /**
@@ -20,8 +19,8 @@ public class ScreenBroadCastSender {
     public ScreenBroadCastSender() {
         try {
             datagramSocket = new DatagramSocket(8888);
-            inetSocketAddress = new InetSocketAddress("192.168.31.255", 9999);
-        } catch (SocketException e) {
+            inetSocketAddress = new InetSocketAddress("192.168.31.37", 9999);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

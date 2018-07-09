@@ -3,8 +3,12 @@ package top.lxpsee.javaday03.screenbroadcast;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 /**
  * 努力常态化  2018/7/4 15:22 The world always makes way for the dreamer
@@ -83,11 +87,66 @@ public class ScreenBroadCastUtils {
      * 将数组转换成整形
      */
     public static int bytes2Int(byte[] arr) {
-        int i0 = arr[0];
+        int i0 = arr[0] & 0xFF;
         int i1 = (arr[1] & 0xFF) << 8;
         int i2 = (arr[2] & 0xFF) << 16;
         int i3 = (arr[3] & 0xFF) << 24;
         return i0 | i1 | i2 | i3;
     }
 
+    /**
+     * 将数组转换成整形,带偏移量
+     */
+    public static int bytesWithOffset2Int(byte[] arr, int offset) {
+        int i0 = arr[0 + offset] & 0xFF;
+        int i1 = (arr[1 + offset] & 0xFF) << 8;
+        int i2 = (arr[2 + offset] & 0xFF) << 16;
+        int i3 = (arr[3 + offset] & 0xFF) << 24;
+        return i0 | i1 | i2 | i3;
+    }
+
+    /**
+     * 压缩数据
+     */
+    public static byte[] zip(byte[] bytes) {
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(bytes.length);
+            ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream);
+
+            zipOutputStream.putNextEntry(new ZipEntry("ONE"));
+            zipOutputStream.write(bytes);
+            zipOutputStream.close();
+            return byteArrayOutputStream.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static byte[] unZip(byte[] zipData) {
+        try {
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(zipData);
+            ZipInputStream zipInputStream = new ZipInputStream(byteArrayInputStream);
+            zipInputStream.getNextEntry();
+
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            byte[] buff = new byte[1024];
+            int len;
+
+            while ((len = zipInputStream.read(buff)) != -1) {
+                byteArrayOutputStream.write(buff, 0, len);
+            }
+
+            byteArrayOutputStream.close();
+            zipInputStream.close();
+            byteArrayInputStream.close();
+
+            return byteArrayOutputStream.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

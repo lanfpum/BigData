@@ -1,5 +1,10 @@
 package top.lxpsee.javaday03.screenbroadcast;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetSocketAddress;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +15,18 @@ import java.util.List;
  */
 public class Teacher {
 
-    private final static int FRAME_UNIT_MAX = 60 * 1024;
+    private static DatagramSocket socket;
+
+    static {
+        try {
+            socket = new DatagramSocket(9999);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public final static int FRAME_UNIT_MAX = 60 * 1024;
 
     public static void main(String[] args) {
         while (true) {
@@ -20,15 +36,40 @@ public class Teacher {
 
     /**
      * 发送一屏数据
-     * 1.截图
+     * 1.截图,压缩
      * 2.切图
      * 3.组装UdpPacket(8+1+1+4+n(max :60))
      * 4.发送
      */
     private static void sendOneScreenData() {
         byte[] frame = ScreenBroadCastUtils.captrueScreen();
-        List<FrameUnit> frameUnitList = splitFrame(frame);
-        new ScreenBroadCastSender().send(frameUnitList);
+        byte[] zipFrame = ScreenBroadCastUtils.zip(frame);
+        List<FrameUnit> frameUnitList = splitFrame(zipFrame);
+//        new ScreenBroadCastSender().send(frameUnitList);
+        sendUnits(frameUnitList);
+    }
+
+    private static void sendUnits(List<FrameUnit> frameUnitList) {
+        try {
+            for (FrameUnit frameUnit : frameUnitList) {
+                byte[] bytes = new byte[frameUnit.getDataLen() + 14];
+                System.arraycopy(ScreenBroadCastUtils.long2Bytes(frameUnit.getFrameId()), 0, bytes, 0, 8);
+
+                bytes[8] = (byte) frameUnit.getFrameUnitCount();
+                bytes[9] = (byte) frameUnit.getFrameUnitNo();
+
+                byte[] dataLen = ScreenBroadCastUtils.int2Bytes(frameUnit.getDataLen());
+                System.arraycopy(dataLen, 0, bytes, 10, 4);
+                System.arraycopy(frameUnit.getDataBytes(), 0, bytes, 14, dataLen.length);
+
+                DatagramPacket packet = new DatagramPacket(bytes, bytes.length);
+                packet.setSocketAddress(new InetSocketAddress("192.168.31.255", 8888));
+                socket.send(packet);
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -74,6 +115,7 @@ public class Teacher {
 
         return frameUnitList;
     }
+
 
 }
 
