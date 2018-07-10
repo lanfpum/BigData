@@ -1,4 +1,4 @@
-package top.lxpsee.javaday03.screenbroadcast;
+package top.lxpsee.javaday03.udp.screenbroadcast;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package top.lxpsee.javaday03.screenbroadcast;
+package top.lxpsee.javaday03.udp.screenbroadcast;
 
 import java.io.Serializable;
 

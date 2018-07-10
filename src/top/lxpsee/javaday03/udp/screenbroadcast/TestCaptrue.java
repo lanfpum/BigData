@@ -1,4 +1,4 @@
-package top.lxpsee.javaday03.screenbroadcast;
+package top.lxpsee.javaday03.udp.screenbroadcast;
 
 import org.junit.Test;
 
@@ -6,7 +6,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;

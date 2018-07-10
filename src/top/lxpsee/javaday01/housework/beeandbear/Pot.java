@@ -44,6 +44,7 @@ public class Pot {
          *为了更好的查看运行结果，所以我暂且选择放在了同步代码块里。
          *但其实在实际应用时，为提高程序运行速度，应该尽量减少同步代码块里的执行动作*/
         total += n;
+        total += n;
         System.out.println(beeName + "加了一滴，罐子里有" + total + "滴蜂蜜");
         this.notifyAll();
     }

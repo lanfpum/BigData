@@ -1,4 +1,4 @@
-package top.lxpsee.javaday03.screenbroadcast;
+package top.lxpsee.javaday03.udp.screenbroadcast;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
