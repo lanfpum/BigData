@@ -2,6 +2,7 @@ package top.lxpsee.javaday01.housework.beeandbear;
 
 /**
  * 努力常态化  2018/6/27 15:32 The world always makes way for the dreamer
+ *
  * 熊吃蜂蜜问题：
  * 2只熊，100只蜜蜂，
  * 蜜蜂每次生成的蜂蜜量为1，罐子的容量是100，当罐子的蜂蜜量达到20时，熊就吃光。

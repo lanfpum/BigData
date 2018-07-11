@@ -9,6 +9,6 @@ public class ClientRefreshFroendsSMessage extends Message {
 
     @Override
     public int getMessageType() {
-        return Message.CLIENT_TO_SERVER_REFRESH_FRIENDS;
+        return CLIENT_TO_SERVER_REFRESH_FRIENDS;
     }
 }

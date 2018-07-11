@@ -1,16 +1,28 @@
 package top.lxpsee.javaday03.tcp.qq.server;
 
+import top.lxpsee.javaday03.tcp.qq.common.Utils;
+
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Serializable;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 努力常态化  2018/7/9 9:42 The world always makes way for the dreamer
  */
 public class QQServer {
+    private static QQServer qqServer = new QQServer();
+
+    private QQServer() {
+    }
+
+    public static QQServer getInstence() {
+        return qqServer;
+    }
+
     /**
      * 维护所有socket连接，对象
      * key:remoteIP + ":" + remotePort
@@ -41,4 +53,44 @@ public class QQServer {
         }
     }
 
+    /**
+     * 获取好友列表方法
+     */
+    public byte[] getFriendBytes() {
+        List<String> friendList = new ArrayList<String>(allSockets.keySet());
+        return Utils.serializableObject((Serializable) friendList);
+    }
+
+    /**
+     * 广播
+     */
+    public void broadcast(byte[] bytes) {
+        Iterator<Socket> iterator = allSockets.values().iterator();
+
+        while (iterator.hasNext()) {
+            try {
+                OutputStream outputStream = iterator.next().getOutputStream();
+                outputStream.write(bytes);
+                outputStream.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
+
+    /**
+     * 私聊
+     */
+    public void send(byte[] bytes, byte[] userInfo) {
+        try {
+            String key = new String(userInfo);
+            OutputStream outputStream = allSockets.get(key).getOutputStream();
+            outputStream.write(bytes);
+            outputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

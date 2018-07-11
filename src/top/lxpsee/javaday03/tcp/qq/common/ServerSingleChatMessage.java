@@ -1,12 +1,10 @@
 package top.lxpsee.javaday03.tcp.qq.common;
 
 /**
- * 努力常态化  2018/7/9 11:27 The world always makes way for the dreamer
- * <p>
- * 客户端单聊信息
+ * 服务器端私聊消息
  */
-public class ClientSingleChatMessage extends Message {
-
+public class ServerSingleChatMessage extends Message {
+    private byte[] senderInfoBytes;
     private byte[] receverInfoBytes;
     private byte[] messageBytes;
 
@@ -16,6 +14,14 @@ public class ClientSingleChatMessage extends Message {
 
     public void setReceverInfoBytes(byte[] receverInfoBytes) {
         this.receverInfoBytes = receverInfoBytes;
+    }
+
+    public byte[] getSenderInfoBytes() {
+        return senderInfoBytes;
+    }
+
+    public void setSenderInfoBytes(byte[] senderInfoBytes) {
+        this.senderInfoBytes = senderInfoBytes;
     }
 
     public byte[] getMessageBytes() {
@@ -28,6 +34,6 @@ public class ClientSingleChatMessage extends Message {
 
     @Override
     public int getMessageType() {
-        return Message.CLIENT_TO_SERVER_SINGLE_CHAT;
+        return SERVER_TO_CLIENT_SINGLE_CHAT;
     }
 }

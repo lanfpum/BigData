@@ -1,5 +1,12 @@
 package top.lxpsee.javaday03.tcp.qq.common;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+
 /**
  * 努力常态化  2018/7/9 10:57 The world always makes way for the dreamer
  * <p>
@@ -71,4 +78,30 @@ public class Utils {
         int i3 = (arr[3 + offset] & 0xFF) << 24;
         return i0 | i1 | i2 | i3;
     }
+
+    /**
+     * 串行化对象方法
+     */
+    public static byte[] serializableObject(Serializable obj) {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream os = new ObjectOutputStream(baos);
+            os.writeObject(obj);
+            os.close();
+            baos.close();
+            return baos.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 通过socket得到远程客户端用户
+     */
+    public static byte[] getUserInfo(Socket socket) {
+        InetSocketAddress inetSocketAddress = (InetSocketAddress) socket.getRemoteSocketAddress();
+        return (inetSocketAddress.getAddress().getHostAddress() + ":" + inetSocketAddress.getPort()).getBytes();
+    }
+
 }
