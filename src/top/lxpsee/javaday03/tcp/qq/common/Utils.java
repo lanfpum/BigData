@@ -1,9 +1,6 @@
 package top.lxpsee.javaday03.tcp.qq.common;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
@@ -91,6 +88,23 @@ public class Utils {
             baos.close();
             return baos.toByteArray();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 使用java的反串行化实现好友列表的刷新
+     */
+    public static Serializable deSerializableObject(byte[] bytes) {
+        try {
+            ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            Serializable ser = (Serializable) ois.readObject();
+            ois.close();
+            bais.close();
+            return ser;
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

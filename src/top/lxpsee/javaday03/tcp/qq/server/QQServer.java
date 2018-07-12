@@ -1,7 +1,9 @@
 package top.lxpsee.javaday03.tcp.qq.server;
 
+import top.lxpsee.javaday03.tcp.qq.common.Message;
 import top.lxpsee.javaday03.tcp.qq.common.Utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -47,7 +49,25 @@ public class QQServer {
                 allSockets.put(key, socket);
                 // 开起服务器端通信线程
                 new CommonThread(socket).start();
+                this.broadcastfriends();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 广播好友列表
+     */
+    public void broadcastfriends() {
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            byteArrayOutputStream.write(Utils.int2Bytes(Message.SERVER_TO_CLIENT_REFRESH_FRIENTS));
+            byteArrayOutputStream.write(Utils.int2Bytes(QQServer.getInstence().getFriendBytes().length));
+            byteArrayOutputStream.write(QQServer.getInstence().getFriendBytes());
+            byteArrayOutputStream.close();
+
+            QQServer.getInstence().broadcast(byteArrayOutputStream.toByteArray());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -92,5 +112,12 @@ public class QQServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 删除指定用户
+     */
+    public synchronized void removeUser(String user) {
+        allSockets.remove(user);
     }
 }

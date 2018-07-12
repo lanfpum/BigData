@@ -1,6 +1,7 @@
 package top.lxpsee.javaday03.tcp.qq.server;
 
 import top.lxpsee.javaday03.tcp.qq.common.MessageFactory;
+import top.lxpsee.javaday03.tcp.qq.common.Utils;
 
 import java.net.Socket;
 
@@ -21,12 +22,13 @@ public class CommonThread extends Thread {
 
         try {
             while (true) {
-//                InputStream inputStream = socket.getInputStream();
                 /* 解析client发来的消息,转换成服务器消息 */
-                byte[] bytes = MessageFactory.parseClientMessageAndSend(socket);
+                MessageFactory.parseClientMessageAndSend(socket);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            String userInfo = new String(Utils.getUserInfo(socket));
+            QQServer.getInstence().removeUser(userInfo);
+            QQServer.getInstence().broadcastfriends();
         }
 
     }
